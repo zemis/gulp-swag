@@ -1,0 +1,41 @@
+{
+  "name": "gulp-swag",
+  "version": "0.0.1",
+  "description": "A Gulp plugin for developing and deploy APIs on Amazon Web Services",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "keywords": [
+    "gulpplugin",
+    "aws",
+    "dynamodb",
+    "lambda",
+    "apigateway"
+  ],
+  "author": "Jerome Riga",
+  "license": "MIT",
+  "dependencies": {
+    "JSONPath": "^0.10.0",
+    "async": "^1.5.0",
+    "aws-sdk": "^2.2.19",
+    "body": "^5.1.0",
+    "connect": "^3.4.0",
+    "connect-route": "^0.1.5",
+    "date-time": "^1.0.0",
+    "gulp": "^3.9.0",
+    "gulp-util": "^3.0.7",
+    "gulp-zip": "^3.0.2",
+    "q": "^1.4.1",
+    "through2": "^2.0.0",
+    "underscore": "^1.8.3",
+    "velocityjs": "^0.7.2",
+    "vinyl": "^1.1.0",
+    "xtend": "^4.0.1"
+  },
+  "devDependencies": {
+    "chai": "^3.4.1",
+    "mocha": "^2.3.4",
+    "nock": "^3.3.2"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "TableName" : "Articles",
+  "KeySchema": [       
+    { "AttributeName": "title", "KeyType": "HASH" }
+  ],
+  "AttributeDefinitions": [       
+    { "AttributeName": "title", "AttributeType": "S" }
+  ],
+  "ProvisionedThroughput": {
+    "ReadCapacityUnits": 1, 
+    "WriteCapacityUnits": 1
+  }
+}

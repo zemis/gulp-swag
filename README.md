@@ -149,7 +149,7 @@ Specifies which lambda function version to use for the deployment.
 
     {
       "Lambda":{
-        "lambdaRootPost": "$LATEST",
-        "lambdaRootGet": 2
+        "lambdaFn1": "$LATEST",
+        "lambdaFn2": 2
       }
     }

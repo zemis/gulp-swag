@@ -6,8 +6,8 @@ var through      = require('through2'),
     jsonBody     = require('body/json'),
     connectRoute = require('connect-route'),
     connect      = require('connect'),
-    jsonPath     = require('JSONPath'),
-    velocity     = require('velocityjs'),
+    Event        = require('./event'),
+    Context      = require('./context'),
     Q            = require('q'),
     fs           = require('fs'),
     path         = require('path');
@@ -22,11 +22,8 @@ module.exports = server;
  */
 function server(options){
   var rootPath = process.cwd(),
-      env      = (process.env.NODE_ENV || 'dev').toLowerCase(),
-      routesPath = options.routes.replace('{NODE_ENV}', env),
-      configPath = options.config.replace('{NODE_ENV}', env),
-      routes   = require(path.join(rootPath, routesPath)),
-      config   = require(path.join(rootPath, configPath)),
+      routes   = require(path.join(rootPath, options.routes)),
+      config   = require(path.join(rootPath, options.config)),
       app      = connect();
 
   // Create server
@@ -40,7 +37,7 @@ function server(options){
             res.setHeader("content-type", "application/json");
             if (err) res.end(JSON.stringify({msg: "bad json payload"}));
             else{
-              var event   = new Event(config, endpoint.jsonRequestTemplate, req, json),
+              var event   = new Event(config.deployment.stage.variables, endpoint.jsonRequestTemplate, req, json),
                   context = new Context(function(data){
                     if(endpoint.enableCORS) res.setHeader("Access-Control-Allow-Origin", "*");
                     res.end(data);
@@ -66,81 +63,6 @@ function server(options){
   });
 
   return stream;
-}
-
-
-/*
- * Lambda Event class
- */
-function Event(config, template, req, body){
-  var event = {};
-
-  function json(path){
-    var res = jsonPath.eval(this.data.json, path)[0];
-    return JSON.stringify(res);
-  }
-
-  function path(){
-    // TODO : define me
-    throw 'define me';
-  }
-
-  function params(){
-    if(arguments[0]){
-      return this.data.params[arguments[0]];
-    }
-    else{
-      return JSON.stringify(this.data.params);
-    }
-  }
-
-  function render(tmpl, env){
-    return (new velocity.Compile(velocity.parse(tmpl))).render(env);
-  }
-
-  var data = {
-    json   : body,
-    params : req.params
-  };
-
-  var env = {
-    stageVariables: config.deployment.stage.variables,
-    input: {
-      params : params,
-      path   : path,
-      json   : json,
-      data   : data
-    }
-  };
-
-  if(template){
-    event = JSON.parse(render(template, env));
-  }
-
-  return event;
-}
-
-
-/*
- * Lambda Context class
- */
-function Context(cb){
-  return {
-    succeed: function (data) {
-      var result = JSON.stringify(data);
-      console.log('succeed: ' + result);
-      cb(JSON.stringify(result, null, 2));
-    },
-    fail: function (data) {
-      var result = JSON.stringify(data);
-      console.log('fail: ' + result);
-      cb(JSON.stringify(result, null, 2));
-    },
-    done: function () {
-      console.log('Done!');
-      cb(JSON.stringify({}, null, 2));
-    }
-  };
 }
 
 

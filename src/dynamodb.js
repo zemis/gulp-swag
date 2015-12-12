@@ -37,9 +37,7 @@ function migrate(options) {
   };
 
   if (options.config){
-    var env      = (process.env.NODE_ENV || 'dev').toLowerCase(),
-        filePath = options.config.replace('{NODE_ENV}', env),
-        config = require(path.join(process.cwd(), filePath));
+    var config = require(path.join(process.cwd(), options.config));
 
     dbConfig = {
       DynamoDB: {
@@ -60,6 +58,7 @@ function migrate(options) {
   gutil.log("Creating tables using table namespace:", dbConfig.tableNamespace);
   var stream = through.obj(
     function(file, enc, cb) {
+      var self = this;
 
       if (file.isNull()) {
         var err = new PluginError(PluginName, 'Not file supplied');
@@ -79,15 +78,19 @@ function migrate(options) {
             filebasename = t[t.length - 1];
 
         params.TableName = dbConfig.tableNamespace + params.TableName;
-
-        db.createTable(params, function(err) {
-          if (err) gutil.log(filebasename, ' :: ✘ ', err.message);
-          else     gutil.log(filebasename, ' :: ✔︎');
+        db.createTable(params, function(err, data) {
+          if (err) {
+            gutil.log(filebasename, ' :: ✘ ', err.message);
+            cb(err);
+          }
+          else {
+            gutil.log(filebasename, ' :: ✔︎');
+            self.emit('created', data);
+            cb();
+          }
         });
       }
 
-      this.push(file);
-      cb(null, file);
   });
 
   return stream;

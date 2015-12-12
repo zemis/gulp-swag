@@ -1,11 +1,17 @@
 var dynamodb = require('../src/dynamodb'),
-    stream  = require('stream'),
     gulp = require('gulp'),
     gutil = require('gulp-util'),
     join = require('path').join,
-    nock  = require('nock'),
     expect   = require('chai').expect;
 
+function randomStr(length) {
+  var text = "";
+  var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  for(var i = 0; i < length; i++) {
+    text += possible.charAt(Math.floor(Math.random() * possible.length));
+  }
+  return text;
+}
 
 describe('swag.dynamodb',function(){
   it('exposes feature migrate', function(){
@@ -13,59 +19,24 @@ describe('swag.dynamodb',function(){
   });
 
   describe('.migrate()', function(){
-    var fakeFile;
-    var tableDefinition = {
-      "TableName" : "Articles",
-      "KeySchema": [       
-        { "AttributeName": "title", "KeyType": "HASH" }
-      ],
-      "AttributeDefinitions": [       
-        { "AttributeName": "title", "AttributeType": "S" }
-      ],
-      "ProvisionedThroughput": {
-        "ReadCapacityUnits": 1, 
-        "WriteCapacityUnits": 1
-      }
-    };
-    var awsCall;
 
-    beforeEach(function(){
-      var content = new Buffer(JSON.stringify(tableDefinition));
-      var empty = new Buffer('');
-      fakeFile = new gutil.File({
-        path: '/path/to/lambdaFn',
-        contents: content
+    xit('creates table',function(done){
+      var stream = gulp.src('./test/fixtures/tableDefinition.json');
+      stream.on('created', function(data){
+        console.log('calling donne :::', data)
+        done();
       });
 
-      // awsCall = nock('http://localhost:8000')
-      //   .post('/')
-      //   .reply(200, {
-      //     TableDescription:
-      //     { AttributeDefinitions: [ { AttributeName: 'title', AttributeType: 'S' } ],
-      //       TableName: 'Articles',
-      //       KeySchema: [ { AttributeName: 'title', KeyType: 'HASH' } ],
-      //       TableStatus: 'ACTIVE',
-      //       CreationDateTime: new Date(),
-      //       ProvisionedThroughput:
-      //       { LastIncreaseDateTime: new Date(),
-      //         LastDecreaseDateTime: new Date(),
-      //         NumberOfDecreasesToday: 0,
-      //         ReadCapacityUnits: 1,
-      //         WriteCapacityUnits: 1 },
-      //       TableSizeBytes: 0,
-      //       ItemCount: 0,
-      //       TableArn: 'arn:aws:dynamodb:ddblocal:000000000000:table/Articles' } 
-      //   });
-    });
+      stream
+        .pipe(dynamodb.migrate({
+          DynamoDB: {
+            apiVersion: '2012-08-10',
+            region   : 'us-west-2',
+            endpoint : 'http://localhost:8000'
+          },
+          tableNamespace: randomStr(4) + '_'
+        }));
 
-    xit('makes aws api call for createTable',function(done){
-      gulp.src('')
-        .write(fakeFile)
-        .pipe(dynamodb.migrate({}))
-        .end();
-
-      expect(awsCall.done()).to.throw(Error);
-      done();
     });
 
     describe('emits an error',function(){

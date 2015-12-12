@@ -1,4 +1,4 @@
-# gulp-swag
+# gulp-swag [![Build Status](https://api.travis-ci.org/zemis/gulp-swag.svg?branch=master)](https://travis-ci.org/zemis/gulp-swag)
 
 Gives the ability to develop and test your API locally and deploy it on AWS.
 It uses API Gateway and Lambda at its core.

@@ -6,18 +6,24 @@ It uses API Gateway and Lambda at its core.
 In your gulpfile.js:
 
 
+    var swag       = require('gulp-swag'),
+        db         = swag.db
+        lambda     = swag.lambda,
+        apigateway = swag.apigateway,
+        i          =  swag.utils.interpolate
+
     gulp.task('db:migrate', function(){
       return gulp.src('./db/definitions/*.json')
         .pipe(db.migrate({
-          config: './env/{NODE_ENV}/config.json'
+          config: i('./env/{NODE_ENV}/config.json')
         }));
     });
     
     gulp.task('lambda:server', function() {
       gulp.src('./handlers/*')
         .pipe(lambda.server({
-          config : './env/{NODE_ENV}/config',
-          routes : './env/{NODE_ENV}/routes',
+          config : i('./env/{NODE_ENV}/config'),
+          routes : i('./env/{NODE_ENV}/routes'),
           port   : 5000
         }));
     });
@@ -25,19 +31,17 @@ In your gulpfile.js:
     gulp.task('lambda:deploy', function(){
       gulp.src('./handlers/*')
         .pipe(lambda.deploy({
-          config : './env/{NODE_ENV}/config',
-          routes : './env/{NODE_ENV}/routes'
+          config : i('./env/{NODE_ENV}/config'),
+          routes : i('./env/{NODE_ENV}/routes')
       }));
     });
     
     gulp.task('apigateway:deploy', function(){
-      var path = './env/{NODE_ENV}/routes.json'.replace('{NODE_ENV}',(process.env.NODE_ENV || 'dev'));
-    
-      gulp.src(path)
+      gulp.src(i('./env/{NODE_ENV}/routes.json'))
         .pipe(apigateway.deploy({
           handlers: './handlers',
-          version : './env/{NODE_ENV}/version',
-          config  : './env/{NODE_ENV}/config',
+          version : i('./env/{NODE_ENV}/version'),
+          config  : i('./env/{NODE_ENV}/config')
         }));
     });
   

@@ -1,3 +1,5 @@
+'use strict';
+
 var swag  = require('../index'),
     expect = require('chai').expect;
 

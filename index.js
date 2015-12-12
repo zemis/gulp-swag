@@ -1,11 +1,13 @@
 'use strict';
 
-var dynamodb   = require('./src/dynamodb'),
+var apigateway = require('./src/apigateway'),
+    dynamodb   = require('./src/dynamodb'),
     lambda     = require('./src/lambda'),
-    apigateway = require('./src/apigateway');
+    utils      = require('./src/utils');
 
 module.exports = {
+  apigateway : apigateway,
   dynamodb   : dynamodb,
   lambda     : lambda,
-  apigateway : apigateway
+  utils      : utils
 };

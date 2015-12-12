@@ -1,16 +1,13 @@
-var gwada  = require('../index'),
+var swag  = require('../index'),
     expect = require('chai').expect;
 
-describe('gulp-gwada', function(){
-  it('exposes feature dynamodb', function(){
-    expect(gwada).to.have.property('dynamodb');
-  });
+describe('gulp-swag', function(){
 
-  it('exposes feature lambda', function(){
-    expect(gwada).to.have.property('lambda');
-  });
+  ['apigateway', 'dynamodb', 'lambda', 'utils']
+    .forEach(function(fn){
+      it('exposes feature '+fn, function(){
+        expect(swag).to.have.property(fn);
+      });
+    });
 
-  it('exposes feature apigateway', function(){
-    expect(gwada).to.have.property('apigateway');
-  });  
 });

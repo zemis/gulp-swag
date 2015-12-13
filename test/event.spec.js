@@ -19,7 +19,7 @@ describe('AWS Lambda Event', function(){
     expect(event).to.be.empty;
   });
 
-  describe('request json', function(){
+  describe('request json payload', function(){
     beforeEach(function(){
       template = '{ "foo": $input.json(\'$.foo\'), "name": $input.json(\'$.name\') }';
       json = {
@@ -28,7 +28,7 @@ describe('AWS Lambda Event', function(){
       };
     });
 
-    it('returns json input',function(){
+    it('is accessible',function(){
       var event = new Event(stageVariables, template, httpRequest, json);
       expect(event).to.eql({
         foo: ['bar', 'baz'],
@@ -51,13 +51,32 @@ describe('AWS Lambda Event', function(){
       template = '{ "allParams": $input.params(), "id": $input.params(\'id\'), "fooId": $input.params(\'fooId\') }';
     });
 
-    it('returns all request parameters', function(){
+    it('are accessible', function(){
       var event = new Event(stageVariables, template, httpRequest, {});
 
       expect(event).to.eql({
         allParams: params,
         id: params.id,
         fooId: params.fooId
+      });
+    });
+  });
+
+  describe('api gateway stage variables', function(){
+    beforeEach(function(){
+      stageVariables = {
+        databaseName: "test_db",
+        apiUrl: "http://live.endpoint.com"
+      };
+      template = '{ "db": "$stageVariables.databaseName", "url": "$stageVariables.apiUrl" }';
+    });
+
+    it('are accessible', function(){
+      var event = new Event(stageVariables, template, httpRequest, {});
+
+      expect(event).to.eql({
+        db: 'test_db',
+        url: 'http://live.endpoint.com'
       });
     });
   });

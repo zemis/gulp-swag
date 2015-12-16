@@ -81,7 +81,7 @@ function migrate(options) {
         db.createTable(params, function(err, data) {
           if (err) {
             gutil.log(filebasename, ' :: ✘ ', err.message);
-            cb(err);
+            cb();
           }
           else {
             gutil.log(filebasename, ' :: ✔︎');

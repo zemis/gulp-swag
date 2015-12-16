@@ -48,11 +48,8 @@ function deploy(options){
  */
 function upload(options){
   var rootPath   = process.cwd(),
-      env        = (process.env.NODE_ENV || 'dev').toLowerCase(),
-      routesPath = options.routes.replace('{NODE_ENV}', env),
-      configPath = options.config.replace('{NODE_ENV}', env),
-      routes     = require(path.join(rootPath, routesPath)),
-      config     = require(path.join(rootPath, configPath)),
+      routes     = require(path.join(rootPath, options.routes)),
+      config     = require(path.join(rootPath, options.config)),
       self;
 
   var lambda = new AWS.Lambda({

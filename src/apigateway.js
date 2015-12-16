@@ -23,13 +23,9 @@ module.exports = {
 */
 function deploy(options){
   var rootPath     = process.cwd(),
-      env          = (process.env.NODE_ENV || 'dev').toLowerCase(),
       handlersPath = path.join(rootPath, options.handlers),
-      versionPath  = options.version.replace('{NODE_ENV}', env),
-      configPath   = options.config.replace('{NODE_ENV}', env),
-      version      = require(path.join(rootPath, versionPath)),
-      config       = require(path.join(rootPath, configPath));
-
+      version      = require(path.join(rootPath, options.version)),
+      config       = require(path.join(rootPath, options.config));
 
   var apigateway = new AWS.APIGateway({
     region: config.AWS.region,

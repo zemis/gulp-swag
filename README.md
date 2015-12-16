@@ -180,3 +180,5 @@ Specifies which lambda function version to use for the deployment.
   }
 }
 ```
+NB: At the moment version.json is only used for deployed API.
+the local server uses the latest version of lambda handlers.

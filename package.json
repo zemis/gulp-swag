@@ -1,6 +1,6 @@
 {
   "name": "gulp-swag",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A Gulp plugin for developing and deploy APIs on Amazon Web Services",
   "repository": {
     "type": "git",

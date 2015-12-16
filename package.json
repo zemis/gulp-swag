@@ -2,6 +2,10 @@
   "name": "gulp-swag",
   "version": "0.0.1",
   "description": "A Gulp plugin for developing and deploy APIs on Amazon Web Services",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/zemis/gulp-swag"
+  },
   "main": "index.js",
   "scripts": {
     "test": "mocha"

@@ -3,6 +3,11 @@
 Gives the ability to develop and test your API locally and deploy it on AWS.
 It uses API Gateway and Lambda at its core.
 
+## Install
+```sh
+$ npm install -D gulp-swag
+```
+
 In your gulpfile.js:
 ```js
 var swag       = require('gulp-swag'),

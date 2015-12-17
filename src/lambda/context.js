@@ -10,17 +10,12 @@ module.exports = Context;
 function Context(cb){
   return {
     succeed: function (data) {
-      var result = JSON.stringify(data, null, 2);
-      console.log('succeed: ' + result);
-      cb(result);
+      cb(JSON.stringify(data, null, 2));
     },
     fail: function (data) {
-      var result = JSON.stringify(data, null, 2);
-      console.log('fail: ' + result);
-      cb(result);
+      cb(JSON.stringify(data, null, 2));
     },
     done: function () {
-      console.log('Done!');
       cb(JSON.stringify({}, null, 2));
     }
   };

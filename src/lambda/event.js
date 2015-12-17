@@ -11,19 +11,42 @@ module.exports = Event;
  * @param {Object} config 
  */
 function Event(stageVariables, template, req, body){
-  var event = {};
+  var event = {},
+      data = {
+        json   : body,
+        params : req.params
+      },
+      environment = {
+        stageVariables: stageVariables,
+        input: {
+          params : paramsFn,
+          path   : pathFn,
+          json   : jsonFn,
+          data   : data
+        }
+      };
 
-  function json(path){
+  if(template){
+    try{
+      event = JSON.parse(render(template, environment));
+    }
+    catch(err){
+      console.log("JSON parsing error for mapping template :: ",template," :: error ::",err);
+      throw err;
+    }
+  }
+
+  function jsonFn(path){
     var res = jsonPath.eval(this.data.json, path)[0];
     return JSON.stringify(res);
   }
 
-  function path(){
+  function pathFn(){
     // TODO : define me
     throw 'define me';
   }
 
-  function params(){
+  function paramsFn(){
     if(arguments[0]){
       return this.data.params[arguments[0]];
     }
@@ -36,24 +59,6 @@ function Event(stageVariables, template, req, body){
     return (new velocity.Compile(velocity.parse(tmpl))).render(env);
   }
 
-  var data = {
-    json   : body,
-    params : req.params
-  };
-
-  var env = {
-    stageVariables: stageVariables,
-    input: {
-      params : params,
-      path   : path,
-      json   : json,
-      data   : data
-    }
-  };
-
-  if(template){
-    event = JSON.parse(render(template, env));
-  }
 
   return event;
 }

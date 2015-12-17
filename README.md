@@ -56,7 +56,7 @@ gulp.task('apigateway:deploy', function(){
 });
 ```
 
-## Sample project file structure using 'gulp-swag'
+### Sample project file structure using 'gulp-swag'
 
 
       db
@@ -82,9 +82,9 @@ gulp.task('apigateway:deploy', function(){
           node_modules
 
 
-## Integration templates
+### Integration templates
 
-### Request template
+#### Request template
 Use to define the 'event' object passed to the lambda function.
 More information on [mapping template](http://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-mapping-template-reference.html).
 Find out about Api Gateway [Stage Variables](https://docs.aws.amazon.com/apigateway/latest/developerguide/stage-variables.html).
@@ -105,9 +105,9 @@ NB: $stageVariables are defined in the config.json file
 }
 ```
 
-## Examples configuration files of routes.json
+### Examples configuration files of routes.json
 
-### config.json
+#### config.json
 This file store AWS settings for the services used (region, api version, db endpoint).
 ```js
 {
@@ -159,7 +159,7 @@ and needs to have the Trust Relationships set like below:
 }
 ```
 
-### routes.json
+#### routes.json
 This file defines the associatons between path and lambda functions.
 ```js
 {
@@ -181,7 +181,7 @@ This file defines the associatons between path and lambda functions.
 The role property is set to ARN role defined with sufficent permission depending on what services are used. More information on how to create it [here](http://docs.aws.amazon.com/lambda/latest/dg/intro-permission-model.html).
 
 
-### version.json
+#### version.json
 Specifies which lambda function version to use for the deployment.
 ```js
 {
@@ -193,3 +193,6 @@ Specifies which lambda function version to use for the deployment.
 ```
 NB: At the moment version.json is only used for deployed API.
 the local server uses the latest version of lambda handlers.
+
+### DynamoDB
+View [usage](https://github.com/zemis/gulp-swag/blob/master/dynamodb.md)

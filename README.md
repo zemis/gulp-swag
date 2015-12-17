@@ -8,6 +8,12 @@ It uses API Gateway and Lambda at its core.
 $ npm install -D gulp-swag
 ```
 
+## Sample project
+This [Demo](https://github.com/zemis/gulp-swag-demo) creates an API with one endpoint /articles.
+It uses AWS Api Gateway, Lambdas and DynamoDB.
+
+
+## Details
 In your gulpfile.js:
 ```js
 var swag       = require('gulp-swag'),

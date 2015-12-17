@@ -15,10 +15,9 @@ function Context(cb){
     fail: function (data) {
       cb(JSON.stringify(data, null, 2));
     },
-    done: function () {
-      cb(JSON.stringify({}, null, 2));
+    done: function (err, data) {
+      if(err) this.fail(err);
+      else    this.succeed(data);
     }
   };
 }
-
-

@@ -20,12 +20,17 @@ describe('AWS Lambda Context',function(){
 
   it('.fail()', function(){
     testData = { ok: false};
-    context.succeed(testData);
+    context.fail(testData);
   });
   
-  it('.done()', function(){
-    testData = {};
-    context.succeed(testData);
+  it('.done() for success', function(){
+    testData = {success: true};
+    context.done(null,testData);
+  });
+
+  it('.done() for an error', function(){
+    testData = {err: true};
+    context.done(testData);
   });
 });
 

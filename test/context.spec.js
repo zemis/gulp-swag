@@ -13,24 +13,30 @@ describe('AWS Lambda Context',function(){
     });
   });
 
-  it('.succeed()', function(){
+  it('.succeed(data)', function(){
     testData = { ok: true};
     context.succeed(testData);
   });
 
-  it('.fail()', function(){
+  it('.fail(err)', function(){
     testData = { ok: false};
     context.fail(testData);
   });
   
-  it('.done() for success', function(){
+  it('.done(null, data) for success', function(){
     testData = {success: true};
     context.done(null,testData);
   });
 
-  it('.done() for an error', function(){
+  it('.done(err) for an error', function(){
     testData = {err: true};
     context.done(testData);
+  });
+
+  it('.done() does nothing', function(){
+    var undefined;
+    testData = undefined;
+    context.done();
   });
 });
 
